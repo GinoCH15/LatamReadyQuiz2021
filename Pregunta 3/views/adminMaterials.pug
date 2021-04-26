@@ -1,0 +1,48 @@
+extends layout
+
+block content
+  .page-wrapper
+    .container-fluid
+      .row: .col-12: .card: .card-body
+        .card-title
+          h2.title-primary2 Materiales
+        .card-subtitle
+          p.d-inline-block
+          |  En esta sección podrá actualizar los precios de los materiales.
+          hr
+          form#material-form.col-8.offset-2.mt-4(method='POST' enctype="multipart/form-data")
+            input(type='hidden', name='_csrf', value=_csrf)
+            .form-group.row
+              strong.text-primary2.col-md-3.col-form-label.text-right(for='materialsExcel') Actualizar tabla de materiales
+              .col-md-7
+                input.select2.form-control.border-primary2(type='file', name='materialsExcel', id='materialsExcel', placeholder='Suba el excel' required)
+            .row
+              .col-md-3
+              .col-md-7.text-right.form-group.offset-sm-3.col-md-7.pl-2
+                button.btn.btn-primary.btn-reset(type='submit')
+                  i.far.fa-keyboard.fa-sm.mr-2
+                  | Subir CSV
+          hr
+        .card-title
+          h4 Gestionar materiales
+        .table-responsive.mt-4
+          table.table
+            thead: tr.bkg-primary.text-white
+              th(scope='col') Índice
+              th(scope='col') Persona
+              th(scope='col') Item
+              th(scope='col') Precio unitario
+              th(scope='col') Cantidad
+              th(scope='col') total
+            tbody
+              each m, i in materials
+                tr.cursor-pointer
+                  td #{i+1}
+                  td #{m.user}
+                  td #{m.item}
+                  td S/#{m.price}
+                  td #{m.quantity}
+                  td S/#{m.price*m.quantity}
+              else
+                td(colspan='6').text-center Aun no hay elementos
+          

@@ -1,1 +1,1 @@
-LatamReadyQuiz2021
+Latam Ready series of exercises call 2021

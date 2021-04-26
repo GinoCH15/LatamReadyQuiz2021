@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pregunta 2</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="@sweetalert2/theme-minimal/minimal.css">
+
+  </head>
+<body>
+    
+    <!-- Todo lo que s trabaje con vue siempre debe estar en un container -->
+    <!-- las directivas aplican un comportamiento reactivo especial al DOM renderizado -->
+    
+    <!-- Interpolación -->
+    <div class="container" id="app">
+        <!-- <h1>Hola mundo</h1> -->
+        <h1 class="text-center">{{titulo}}</h1>
+        <div class="row">
+          <div class="col-12 border border-success">
+            <div class="container py-5">
+              <h1 class="text-center">{{subTitle}}</h1>
+              <ul class="nav nav-pills nav-justified mb-3">
+                <li class="nav-item">
+                  <a :class="status!='home'?'nav-link':'nav-link active'" style="cursor: pointer;" @click="status='home'">Tabla</a>
+                </li>
+                <li class="nav-item">
+                  <a :class="status!='confirmed'?'nav-link':'nav-link active'" style="cursor: pointer;" @click="status='confirmed'" >Confirmados</a>
+                </li>
+                <li class="nav-item">
+                  <a :class="status!='deaths'?'nav-link':'nav-link active'" style="cursor: pointer;" @click="status='deaths'">Muertes</a>
+                </li>
+                <li class="nav-item">
+                  <a :class="status!='recovered'?'nav-link':'nav-link active'" style="cursor: pointer;" @click="status='recovered'">Recuperados</a>
+                </li>
+                <li class="nav-item">
+                  <a :class="status!='active'?'nav-link':'nav-link active'" style="cursor: pointer;"  @click="status='active'">Activos</a>
+                </li>
+              </ul>
+              <div class="container"  v-if="status=='home'">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Locación</th>
+                      <th scope="col">Confirmados</th>
+                      <th scope="col">Muertes</th>
+                      <th scope="col">Recuperados</th>
+                      <th scope="col">Activos</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(l,index) of list">
+                      <th scope="row">{{index+1}}</th>
+                      <td>{{l.location}}</td>
+                      <td>{{(l.confirmed/total.confirmed)*100}}%</td>
+                      <td>{{(l.deaths/total.deaths)*100}}%</td>
+                      <td>{{(l.recovered/total.recovered)*100}}%</td>
+                      <td>{{(l.active/total.active)*100}}%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="container"  v-if="status=='confirmed'">
+                <div class="row" v-for="(l,index) of list">
+                  <div class="col-2">
+                    <h4>{{l.location}}</h3>
+                  </div>
+                  <div class="col-10">
+                    <div class="progress my-2" >
+                      <div class="progress-bar" role="progressbar" :style="'width: '+(l.confirmed/total.confirmed)*100+'%;'" :aria-valuenow="(l.confirmed/total.confirmed)*100" aria-valuemin="0" :aria-valuemax="total.confirmed">{{(l.confirmed/total.confirmed)*100}}%</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="container"  v-else-if="status=='deaths'">
+                <div class="row" v-for="(l,index) of list">
+                  <div class="col-2">
+                    <h4>{{l.location}}</h3>
+                  </div>
+                  <div class="col-10">
+                    <div class="progress my-2" >
+                      <div class="progress-bar" role="progressbar" :style="'width: '+(l.deaths/total.deaths)*100+'%;'" :aria-valuenow="(l.deaths/total.deaths)*100" aria-valuemin="0" :aria-valuemax="total.deaths">{{(l.deaths/total.deaths)*100}}%</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="container"  v-else-if="status=='recovered'">
+                <div class="row" v-for="(l,index) of list">
+                  <div class="col-2">
+                    <h4>{{l.location}}</h3>
+                  </div>
+                  <div class="col-10">
+                    <div class="progress my-2" >
+                      <div class="progress-bar" role="progressbar" :style="'width: '+(l.recovered/total.recovered)*100+'%;'" :aria-valuenow="(l.recovered/total.recovered)*100" aria-valuemin="0" :aria-valuemax="total.recovered">{{(l.recovered/total.recovered)*100}}%</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="container"  v-else-if="status=='active'">
+                <div class="row" v-for="(l,index) of list">
+                  <div class="col-2">
+                    <h4>{{l.location}}</h3>
+                  </div>
+                  <div class="col-10">
+                    <div class="progress my-2" >
+                      <div class="progress-bar" role="progressbar" :style="'width: '+(l.active/total.active)*100+'%;'" :aria-valuenow="(l.active/total.active)*100" aria-valuemin="0" :aria-valuemax="total.active">{{(l.active/total.active)*100}}%</div>
+                    </div>
+                  </div>
+                </div>
+              </div>                
+              
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- Encima de nuestros propios scripts -->
+    <!--SweetAlert-->
+    <script type="application/javascript" src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script type="application/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <!--axios-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="vue.js"></script>
+</body>
+</html>
